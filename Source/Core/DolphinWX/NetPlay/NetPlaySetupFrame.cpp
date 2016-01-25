@@ -55,11 +55,18 @@ NetPlaySetupFrame::NetPlaySetupFrame(wxWindow* const parent, const CGameListCtrl
 	m_direct_traversal->Bind(wxEVT_CHOICE, &NetPlaySetupFrame::OnChoice, this);
 	m_direct_traversal->Append(_("Direct"));
 	m_direct_traversal->Append(_("Traversal"));
+	m_direct_traversal->Append(_("Matchmaking"));
 
 	std::string travChoice;
 	netplay_section.Get("TraversalChoice", &travChoice, "direct");
 
-	if (travChoice == "traversal")
+	if (travChoice == "matchmaking")
+	{
+		int *a = nullptr;
+		*a += 1;
+		m_direct_traversal->Select(2);
+	}
+	else if (travChoice == "traversal")
 	{
 		m_direct_traversal->Select(1);
 	}
@@ -73,6 +80,7 @@ NetPlaySetupFrame::NetPlaySetupFrame(wxWindow* const parent, const CGameListCtrl
 	m_trav_reset_btn = new wxButton(panel, wxID_ANY, _("Reset Traversal Settings"));
 	m_trav_reset_btn->Bind(wxEVT_BUTTON, &NetPlaySetupFrame::OnResetTraversal, this);
 	trav_szr->Add(m_trav_reset_btn, 0, wxCENTER | wxRIGHT);
+
 
 	wxBoxSizer* const nick_szr = new wxBoxSizer(wxHORIZONTAL);
 	wxStaticText* const nick_lbl = new wxStaticText(panel, wxID_ANY, _("Nickname :"));
@@ -95,6 +103,8 @@ NetPlaySetupFrame::NetPlaySetupFrame(wxWindow* const parent, const CGameListCtrl
 	notebook->AddPage(connect_tab, _("Connect"));
 	wxPanel* const host_tab = new wxPanel(notebook, wxID_ANY);
 	notebook->AddPage(host_tab, _("Host"));
+	wxPanel* const search_tab = new wxPanel(notebook, wxID_ANY);
+	notebook->AddPage(search_tab, _("Search"));
 
 	// connect tab
 	{
@@ -174,6 +184,28 @@ NetPlaySetupFrame::NetPlaySetupFrame(wxWindow* const parent, const CGameListCtrl
 		host_szr->Add(host_btn, 0, wxALL | wxALIGN_RIGHT, 5);
 
 		host_tab->SetSizerAndFit(host_szr);
+	}
+
+	// Search tab
+	{
+		m_search_num_players_lbl = new wxStaticText(search_tab, wxID_ANY, _("Number of Players : "));
+		m_num_players_text = new wxTextCtrl(search_tab, wxID_ANY, StrToWxStr("2"));
+
+		wxBoxSizer* const top_szr = new wxBoxSizer(wxHORIZONTAL);
+		top_szr->Add(m_search_num_players_lbl, 0, wxCENTER | wxRIGHT, 5);
+		top_szr->Add(m_num_players_text, 0);
+
+		wxBoxSizer* const search_szr = new wxBoxSizer(wxVERTICAL);
+		search_szr->Add(top_szr, 0, wxALL | wxEXPAND, 5);
+
+		m_game_sbox = new wxListBox(search_tab, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SORT);
+		m_game_sbox->Bind(wxEVT_LISTBOX_DCLICK, &NetPlaySetupFrame::OnSearch, this);
+
+		NetPlayDialog::FillWithGameNames(m_game_sbox, *game_list);
+		
+		search_szr->Add(m_game_sbox, 1, wxLEFT | wxRIGHT | wxEXPAND, 5);
+
+		search_tab->SetSizerAndFit(search_szr);
 	}
 
 	// bottom row
@@ -337,6 +369,11 @@ void NetPlaySetupFrame::OnHost(wxCommandEvent&)
 	{
 		WxUtils::ShowErrorDialog(_("Failed to listen. Is another instance of the NetPlay server running?"));
 	}
+}
+
+void NetPlaySetupFrame::OnSearch(wxCommandEvent &event)
+{
+
 }
 
 void NetPlaySetupFrame::OnJoin(wxCommandEvent&)
