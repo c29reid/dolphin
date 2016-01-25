@@ -29,6 +29,7 @@ private:
 	void OnChoice(wxCommandEvent& event);
 	void OnResetTraversal(wxCommandEvent& event);
 	void OnTraversalListenPortChanged(wxCommandEvent& event);
+	void OnSearch(wxCommandEvent &event);
 
 	void MakeNetPlayDiag(int port, const std::string& game, bool is_hosting);
 
@@ -36,16 +37,20 @@ private:
 	wxStaticText* m_client_port_lbl;
 	wxTextCtrl*   m_nickname_text;
 	wxStaticText* m_host_port_lbl;
+	wxStaticText* m_search_num_players_lbl;
 	wxTextCtrl*   m_host_port_text;
 	wxTextCtrl*   m_connect_port_text;
 	wxTextCtrl*   m_connect_ip_text;
+	wxTextCtrl*   m_num_players_text;
 	wxChoice*     m_direct_traversal;
 	wxStaticText* m_traversal_lbl;
 	wxButton* m_trav_reset_btn;
 	wxCheckBox* m_traversal_listen_port_enabled;
 	wxSpinCtrl* m_traversal_listen_port;
+	wxButton* m_search_btn;
 
 	wxListBox*  m_game_lbox;
+	wxListBox*	m_game_sbox;
 #ifdef USE_UPNP
 	wxCheckBox* m_upnp_chk;
 #endif
