@@ -192,6 +192,7 @@
     <ClCompile Include="MemTools.cpp" />
     <ClCompile Include="Movie.cpp" />
     <ClCompile Include="NetPlayClient.cpp" />
+    <ClCompile Include="NetPlayMatchmaker.cpp" />
     <ClCompile Include="NetPlayServer.cpp" />
     <ClCompile Include="PatchEngine.cpp" />
     <ClCompile Include="PowerPC\Interpreter\Interpreter.cpp" />
@@ -397,6 +398,7 @@
     <ClInclude Include="MemTools.h" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="NetPlayClient.h" />
+    <ClInclude Include="NetPlayMatchmaker.h" />
     <ClInclude Include="NetPlayProto.h" />
     <ClInclude Include="NetPlayServer.h" />
     <ClInclude Include="PatchEngine.h" />
