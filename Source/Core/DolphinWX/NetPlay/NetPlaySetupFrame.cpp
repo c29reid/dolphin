@@ -402,7 +402,6 @@ void NetPlaySetupFrame::OnHost(wxCommandEvent&)
 
 void NetPlaySetupFrame::OnSearch(wxCommandEvent &event)
 {
-	std::wstring ip = "localhost";
 
 }
 
