@@ -15,6 +15,7 @@
 #include "Common/Timer.h"
 #include "Common/TraversalClient.h"
 #include "Core/NetPlayProto.h"
+#include "Common/FifoQueue.h"
 
 class NetPlayUI;
 

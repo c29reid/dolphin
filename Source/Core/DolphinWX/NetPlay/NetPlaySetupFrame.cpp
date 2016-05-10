@@ -17,11 +17,13 @@
 #include "Common/IniFile.h"
 #include "Core/NetPlayClient.h"
 #include "Core/NetPlayServer.h"
+#include "Core/NetPlayMatchmaker.h"
 #include "DolphinWX/Frame.h"
 #include "DolphinWX/Main.h"
 #include "DolphinWX/WxUtils.h"
 #include "DolphinWX/NetPlay/NetPlaySetupFrame.h"
 #include "DolphinWX/NetPlay/NetWindow.h"
+#include "DolphinWX/NetPlaySearch.h"
 
 static void GetTraversalPort(IniFile::Section& section, std::string* port)
 {
@@ -63,8 +65,6 @@ NetPlaySetupFrame::NetPlaySetupFrame(wxWindow* const parent, const CGameListCtrl
 
 	if (travChoice == "matchmaking")
 	{
-		int *a = nullptr;
-		*a += 1;
 		m_direct_traversal->Select(2);
 	}
 	else if (travChoice == "traversal")
@@ -402,7 +402,21 @@ void NetPlaySetupFrame::OnHost(wxCommandEvent&)
 
 void NetPlaySetupFrame::OnSearch(wxCommandEvent &event)
 {
+	NetPlayDialog*& npd = NetPlayDialog::GetInstance();
+	NetPlayMatchmaker*& netplay_matchmaker = NetPlayDialog::GetNetPlayMatchmaker();
+	
+	if (npd)
+	{
+		WxUtils::ShowErrorDialog(_("A NetPlay window is already open!"));
+		return;
+	}
+	
+	std::string game(WxStrToStr(m_game_lbox->GetStringSelection()));
+	netplay_matchmaker = new NetPlayMatchmaker("127.0.0.1", 5232, game);
 
+	// pretty hacky
+	m_game_lbox->Select(m_game_sbox->GetSelection());
+	OnHost(event);
 }
 
 void NetPlaySetupFrame::OnJoin(wxCommandEvent&)

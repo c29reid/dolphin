@@ -199,6 +199,9 @@
     <ClCompile Include="NetPlay\PadMapDialog.cpp">
       <Filter>GUI\NetPlay</Filter>
     </ClCompile>
+    <ClCompile Include="NetPlaySearch.cpp">
+      <Filter>GUI\NetPlay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -361,6 +364,9 @@
       <Filter>GUI\NetPlay</Filter>
     </ClInclude>
     <ClInclude Include="NetPlay\PadMapDialog.h">
+      <Filter>GUI\NetPlay</Filter>
+    </ClInclude>
+    <ClInclude Include="NetPlaySearch.h">
       <Filter>GUI\NetPlay</Filter>
     </ClInclude>
   </ItemGroup>

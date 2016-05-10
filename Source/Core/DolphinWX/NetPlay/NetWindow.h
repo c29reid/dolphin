@@ -12,6 +12,7 @@
 #include "Core/NetPlayClient.h"
 #include "Core/NetPlayProto.h"
 #include "Core/NetPlayServer.h"
+#include "Core/NetPlayMatchmaker.h"
 
 class CGameListCtrl;
 class wxButton;
@@ -45,6 +46,8 @@ public:
 
 	void OnStart(wxCommandEvent& event);
 
+	void OnSearch(wxCommandEvent& event);
+
 	// implementation of NetPlayUI methods
 	void BootGame(const std::string& filename) override;
 	void StopGame() override;
@@ -59,6 +62,7 @@ public:
 	static NetPlayDialog*& GetInstance() { return npd; }
 	static NetPlayClient*& GetNetPlayClient() { return netplay_client; }
 	static NetPlayServer*& GetNetPlayServer() { return netplay_server; }
+	static NetPlayMatchmaker*& GetNetPlayMatchmaker() { return netplay_matchmaker; }
 	static void FillWithGameNames(wxListBox* game_lbox, const CGameListCtrl& game_list);
 
 	bool IsRecording() override;
@@ -103,4 +107,5 @@ private:
 	static NetPlayDialog* npd;
 	static NetPlayServer* netplay_server;
 	static NetPlayClient* netplay_client;
+	static NetPlayMatchmaker* netplay_matchmaker;
 };

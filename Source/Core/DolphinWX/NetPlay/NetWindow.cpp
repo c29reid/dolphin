@@ -44,6 +44,7 @@
 
 NetPlayServer* NetPlayDialog::netplay_server = nullptr;
 NetPlayClient* NetPlayDialog::netplay_client = nullptr;
+NetPlayMatchmaker* NetPlayDialog::netplay_matchmaker = nullptr;
 NetPlayDialog *NetPlayDialog::npd = nullptr;
 
 static wxString FailureReasonStringForHostLabel(int reason)
@@ -190,7 +191,22 @@ NetPlayDialog::NetPlayDialog(wxWindow* const parent, const CGameListCtrl* const 
 	quit_btn->Bind(wxEVT_BUTTON, &NetPlayDialog::OnQuit, this);
 
 	wxBoxSizer* const bottom_szr = new wxBoxSizer(wxHORIZONTAL);
-	if (is_hosting)
+	if (is_hosting && netplay_matchmaker)
+	{
+		m_start_btn = new wxButton(panel, wxID_ANY, _("Search"));
+		m_start_btn->Bind(wxEVT_BUTTON, &NetPlayDialog::OnSearch, this);
+		bottom_szr->Add(m_start_btn);
+
+		bottom_szr->Add(new wxStaticText(panel, wxID_ANY, _("Buffer:")), 0, wxLEFT | wxCENTER, 5);
+		wxSpinCtrl* const padbuf_spin = new wxSpinCtrl(panel, wxID_ANY, std::to_string(INITIAL_PAD_BUFFER_SIZE)
+			, wxDefaultPosition, wxSize(64, -1), wxSP_ARROW_KEYS, 0, 200, INITIAL_PAD_BUFFER_SIZE);
+		padbuf_spin->Bind(wxEVT_SPINCTRL, &NetPlayDialog::OnAdjustBuffer, this);
+		bottom_szr->Add(padbuf_spin, 0, wxCENTER);
+
+		m_memcard_write = new wxCheckBox(panel, wxID_ANY, _("Write memcards/SD"));
+		bottom_szr->Add(m_memcard_write, 0, wxCENTER);
+	}
+	else if (is_hosting)
 	{
 		m_start_btn = new wxButton(panel, wxID_ANY, _("Start"));
 		m_start_btn->Bind(wxEVT_BUTTON, &NetPlayDialog::OnStart, this);
@@ -237,6 +253,11 @@ NetPlayDialog::~NetPlayDialog()
 	{
 		delete netplay_server;
 		netplay_server = nullptr;
+	}
+	if (netplay_matchmaker)
+	{
+		delete netplay_matchmaker;
+		netplay_matchmaker = nullptr;
 	}
 	npd = nullptr;
 }
@@ -288,6 +309,11 @@ void NetPlayDialog::OnStart(wxCommandEvent&)
 	GetNetSettings(settings);
 	netplay_server->SetNetSettings(settings);
 	netplay_server->StartGame();
+}
+
+void NetPlayDialog::OnSearch(wxCommandEvent & event)
+{
+	netplay_matchmaker->search("OKAY");
 }
 
 void NetPlayDialog::BootGame(const std::string& filename)

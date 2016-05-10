@@ -1031,7 +1031,10 @@ void Renderer::ApplyState(bool bUseDstAlpha)
 	for (unsigned int stage = 0; stage < 8; stage++)
 	{
 		// TODO: cache SamplerState directly, not d3d object
+#pragma warning( push )
+#pragma warning(disable:4334)
 		gx_state.sampler[stage].max_anisotropy = 1 << g_ActiveConfig.iMaxAnisotropy;
+#pragma warning( pop )
 		D3D::stateman->SetSampler(stage, gx_state_cache.Get(gx_state.sampler[stage]));
 	}
 
