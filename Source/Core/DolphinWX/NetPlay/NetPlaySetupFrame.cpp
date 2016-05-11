@@ -23,7 +23,6 @@
 #include "DolphinWX/WxUtils.h"
 #include "DolphinWX/NetPlay/NetPlaySetupFrame.h"
 #include "DolphinWX/NetPlay/NetWindow.h"
-#include "DolphinWX/NetPlaySearch.h"
 
 static void GetTraversalPort(IniFile::Section& section, std::string* port)
 {

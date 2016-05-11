@@ -20,7 +20,7 @@ void NetPlayMatchmaker::search(std::string code)
 	sf::Socket::Status status = socket.connect(m_server, m_port);
 
 	sf::Packet packet;
-	packet << code << m_game << 0 << 10 << "127.0.0.1" << "test name";
+	packet << code << "TODO MAKE THIS THINGY GIVE AN ACTUAL GAME PLS?" << 0 << 10 << "127.0.0.1" << "test name";
 
 	socket.send(packet);
 
